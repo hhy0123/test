@@ -5,142 +5,154 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>게시판</title>
     <style>
-
-    h1, h2 {
-        font-weight: 700;
-        color: #222;
-        margin-bottom: 20px;
+        body {
+        margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        background: linear-gradient(135deg, #eeeeff, #f4f3ff);
+        color: #333;
+        }
 
-    .categories {
-    background: #d9ccf0;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    padding: 15px;
-    }
+        .title-box {
+        background: #bebfff;
+        padding: 20px;
+        margin: 40px auto 30px;
+        text-align: center;
+        font-size: 2em;
+        font-weight: 700;
+        color: #3e2e7e;
+        border-radius: 12px;
+        width: fit-content;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
 
-    .category {
-    background: #ece4ff;
-    border-radius: 8px;
-    border: none;
-    color: #7b1ddf;
-    font-weight: 600;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    box-shadow: 0 2px 5px rgba(64, 14, 150, 0.3);
-    }
+        .categories {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+        }
 
-    .category:hover {
-    background-color: #622fd7;
-    color: white;
-    box-shadow: 0 4px 12px rgba(56, 71, 169, 0.6);
-    }
+        .category {
+        background: #bebfff;
+        border-radius: 12px;
+        padding: 18px 26px;
+        cursor: pointer;
+        text-align: center;
+        color: #5c2dd5;
+        font-weight: 600;
+        font-size: 1.1em;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        }
 
-    .floating-button {
-    background-color: #3341a0;
-    box-shadow: 0 6px 15px rgba(58,77,203,0.5);
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+        .category:hover {
+        background-color: #6847dd;
+        color: white;
+        transform: translateY(-3px);
+        }
 
-    .floating-button:hover {
-    background-color: #2b378a;
-    transform: scale(1.1);
-    }
-
-    .button {
-    background-color: #5e35f4;
-    border: none;
-    color: white;
-    font-weight: 600;
-    border-radius: 6px;
-    padding: 8px 16px;
-    box-shadow: 0 3px 8px rgba(69, 41, 141, 0.4);
-    transition: background-color 0.3s ease;
-    }
-
-    .button:hover {
-    background-color: #502fad;
-    }
-
-    input[type="text"], select, textarea, input[type="file"] {
-    border: 1.5px solid #cbd5e1;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 1em;
-    transition: border-color 0.3s ease;
-    }
-
-    input[type="text"]:focus, select:focus, textarea:focus, input[type="file"]:focus {
-    outline: none;
-    border-color: #4c239c;
-    box-shadow: 0 0 8px rgba(106, 60, 234, 0.5);
-    }
-
-    .detail-post {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-    padding: 20px;
-    margin-top: 20px;
-    transition: box-shadow 0.3s ease;
-    }
-
-    .detail-post:hover {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    }
-
-    .post-meta {
-    color: #666;
-    font-style: italic;
-    margin-top: 8px;
-    }
-
-    .write-area {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 6px 15px rgba(58,77,203,0.1);
-    }
-
-    .flex {
-    margin-bottom: 10px;
-    }
-    .post { border-top: 1px solid #eee; padding: 5px; }
-    .button { padding: 5px 10px; cursor: pointer; }
-    .write-area { margin-top: 20px; }
-    .hidden { display: none; }
-    .post-meta { font-size: 0.8em; color: gray; }
-    .flex { display: flex; justify-content: space-between; align-items: center; }
-    .floating-button {
+        .floating-button {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        background-color: hwb(281 16% 54%);
+        background-color: #5e35f4;
         color: white;
         border: none;
         border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
+        width: 56px;
+        height: 56px;
+        font-size: 28px;
         cursor: pointer;
-    }
-    .detail-post { border: 1px solid #ccc; padding: 15px; margin-top: 20px; }
+        }
+
+        .floating-button:hover {
+        background-color: #4b2dbe;
+        }
+
+        .write-area, .detail-post {
+        background: white;
+        padding: 25px;
+        margin: 20px auto;
+        border-radius: 12px;
+        max-width: 700px;
+        }
+
+        .button {
+        background-color: #5e35f4;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+        background-color: #4a29c1;
+        }
+
+        input[type="text"], select, textarea, input[type="file"] {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1em;
+        width: 100%;
+        margin-bottom: 12px;
+        box-sizing: border-box;
+        }
+
+        input[type="text"]:focus, select:focus, textarea:focus {
+        border-color: #6b4ede;
+        outline: none;
+        box-shadow: 0 0 6px rgba(106, 60, 234, 0.25);
+        }
+
+        .flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 700px;
+        margin: 0 auto;
+        margin-bottom: 16px;
+        }
+
+        .hidden {
+        display: none;
+        }
+
+        .post-meta {
+        font-size: 0.85em;
+        color: #777;
+        margin-top: 8px;
+        }
+
+        #categoryPosts {
+        max-width: 700px;
+        margin: 0 auto;
+        }
+
+        .subtitle-box {
+        background: #f5f3ff;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-size: 1.5em;
+        font-weight: 600;
+        color: #4b3f77;
+        margin: 30px auto;
+        width: fit-content;
+        text-align: center;
+        }
     </style>
-</head>
-<body>
-    <h1>lions 게시판</h1>
+    </head>
+    <body>
+    <div class="title-box">lions 게시판</div>
 
     <div id="home">
         <div class="categories">
-        <div class="category" onclick="openCategoryPage('프론트엔드')">
-            <strong>프론트엔드</strong>
-        </div>
-        <div class="category" onclick="openCategoryPage('백엔드')">
-            <strong>백엔드</strong>
-        </div>
-        <div class="category" onclick="openCategoryPage('기획/디자인')">
-            <strong>기획/디자인</strong>
-        </div>
+        <div class="category" onclick="openCategoryPage('프론트엔드')">프론트엔드</div>
+        <div class="category" onclick="openCategoryPage('백엔드')">백엔드</div>
+        <div class="category" onclick="openCategoryPage('기획/디자인')">기획/디자인</div>
         </div>
     </div>
 
@@ -148,45 +160,45 @@
 
     <div id="write" class="hidden">
         <div class="flex">
-        <h2>글 작성</h2>
+        <div class="subtitle-box">글 작성</div>
         <button class="button" onclick="submitPost()">완료</button>
         </div>
         <div class="write-area">
-        <input type="text" id="title" placeholder="제목을 입력하세요" style="width: 100%; margin-bottom: 10px;" /><br />
-        <select id="category" style="width: 100%; margin-bottom: 10px;">
+        <input type="text" id="title" placeholder="제목을 입력하세요" />
+        <select id="category">
             <option value="프론트엔드">프론트엔드</option>
             <option value="백엔드">백엔드</option>
             <option value="기획/디자인">기획/디자인</option>
-        </select><br />
-        <textarea id="content" placeholder="내용을 입력하세요" rows="6" style="width: 100%; margin-bottom: 10px;"></textarea><br />
+        </select>
+        <textarea id="content" placeholder="내용을 입력하세요" rows="6"></textarea>
         <input type="file" id="file" />
         </div>
     </div>
 
     <div id="categoryView" class="hidden">
         <div class="flex">
-        <h2 id="categoryTitle">카테고리</h2>
+        <div class="subtitle-box" id="categoryTitle">카테고리</div>
         <button class="button" onclick="goHome()">홈으로</button>
         </div>
         <div id="categoryPosts"></div>
     </div>
 
     <script>
-    let posts = [];
+        let posts = [];
 
-    function openWritePage() {
+        function openWritePage() {
         document.getElementById('home').classList.add('hidden');
         document.getElementById('write').classList.remove('hidden');
         document.getElementById('categoryView').classList.add('hidden');
-    }
+        }
 
-    function goHome() {
+        function goHome() {
         document.getElementById('home').classList.remove('hidden');
         document.getElementById('write').classList.add('hidden');
         document.getElementById('categoryView').classList.add('hidden');
-    }
+        }
 
-    function submitPost() {
+        function submitPost() {
         const title = document.getElementById('title').value;
         const content = document.getElementById('content').value;
         const category = document.getElementById('category').value;
@@ -204,15 +216,15 @@
         document.getElementById('title').value = '';
         document.getElementById('content').value = '';
         document.getElementById('file').value = '';
-    }
+        }
 
-    function deletePost(id) {
+        function deletePost(id) {
         posts = posts.filter(p => p.id !== id);
         const currentCategory = document.getElementById('categoryTitle').innerText;
         openCategoryPage(currentCategory);
-    }
+        }
 
-    function openCategoryPage(category) {
+        function openCategoryPage(category) {
         document.getElementById('home').classList.add('hidden');
         document.getElementById('write').classList.add('hidden');
         document.getElementById('categoryView').classList.remove('hidden');
@@ -222,18 +234,18 @@
         container.innerHTML = '';
 
         posts.filter(p => p.category === category).forEach(post => {
-        const div = document.createElement('div');
-        div.className = 'detail-post';
-        div.innerHTML = `
+            const div = document.createElement('div');
+            div.className = 'detail-post';
+            div.innerHTML = `
             <h3>${post.title}</h3>
             <p>${post.content}</p>
             <div class="post-meta">작성일: ${post.date}</div>
             ${post.fileName ? `<div class="post-meta">첨부파일: <a href="${post.fileURL}" download="${post.fileName}">${post.fileName}</a></div>` : ''}
             <button class="button" onclick="deletePost(${post.id})">삭제</button>
-        `;
-        container.appendChild(div);
+            `;
+            container.appendChild(div);
         });
-    }
+        }
     </script>
 </body>
 </html>
