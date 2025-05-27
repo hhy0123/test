@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>게시판</title>
+    <style>
+
+    h1, h2 {
+        font-weight: 700;
+        color: #222;
+        margin-bottom: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .categories {
+    background: #d9ccf0;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 15px;
+    }
+
+    .category {
+    background: #ece4ff;
+    border-radius: 8px;
+    border: none;
+    color: #7b1ddf;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(64, 14, 150, 0.3);
+    }
+
+    .category:hover {
+    background-color: #622fd7;
+    color: white;
+    box-shadow: 0 4px 12px rgba(56, 71, 169, 0.6);
+    }
+
+    .floating-button {
+    background-color: #3341a0;
+    box-shadow: 0 6px 15px rgba(58,77,203,0.5);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .floating-button:hover {
+    background-color: #2b378a;
+    transform: scale(1.1);
+    }
+
+    .button {
+    background-color: #5e35f4;
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 8px 16px;
+    box-shadow: 0 3px 8px rgba(69, 41, 141, 0.4);
+    transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+    background-color: #502fad;
+    }
+
+    input[type="text"], select, textarea, input[type="file"] {
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+    }
+
+    input[type="text"]:focus, select:focus, textarea:focus, input[type="file"]:focus {
+    outline: none;
+    border-color: #4c239c;
+    box-shadow: 0 0 8px rgba(106, 60, 234, 0.5);
+    }
+
+    .detail-post {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    padding: 20px;
+    margin-top: 20px;
+    transition: box-shadow 0.3s ease;
+    }
+
+    .detail-post:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .post-meta {
+    color: #666;
+    font-style: italic;
+    margin-top: 8px;
+    }
+
+    .write-area {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(58,77,203,0.1);
+    }
+
+    .flex {
+    margin-bottom: 10px;
+    }
+    .post { border-top: 1px solid #eee; padding: 5px; }
+    .button { padding: 5px 10px; cursor: pointer; }
+    .write-area { margin-top: 20px; }
+    .hidden { display: none; }
+    .post-meta { font-size: 0.8em; color: gray; }
+    .flex { display: flex; justify-content: space-between; align-items: center; }
+    .floating-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: hwb(281 16% 54%);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .detail-post { border: 1px solid #ccc; padding: 15px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>lions 게시판</h1>
+
+    <div id="home">
+        <div class="categories">
+        <div class="category" onclick="openCategoryPage('프론트엔드')">
+            <strong>프론트엔드</strong>
+        </div>
+        <div class="category" onclick="openCategoryPage('백엔드')">
+            <strong>백엔드</strong>
+        </div>
+        <div class="category" onclick="openCategoryPage('기획/디자인')">
+            <strong>기획/디자인</strong>
+        </div>
+        </div>
+    </div>
+
+    <button class="floating-button" onclick="openWritePage()">+</button>
+
+    <div id="write" class="hidden">
+        <div class="flex">
+        <h2>글 작성</h2>
+        <button class="button" onclick="submitPost()">완료</button>
+        </div>
+        <div class="write-area">
+        <input type="text" id="title" placeholder="제목을 입력하세요" style="width: 100%; margin-bottom: 10px;" /><br />
+        <select id="category" style="width: 100%; margin-bottom: 10px;">
+            <option value="프론트엔드">프론트엔드</option>
+            <option value="백엔드">백엔드</option>
+            <option value="기획/디자인">기획/디자인</option>
+        </select><br />
+        <textarea id="content" placeholder="내용을 입력하세요" rows="6" style="width: 100%; margin-bottom: 10px;"></textarea><br />
+        <input type="file" id="file" />
+        </div>
+    </div>
+
+    <div id="categoryView" class="hidden">
+        <div class="flex">
+        <h2 id="categoryTitle">카테고리</h2>
+        <button class="button" onclick="goHome()">홈으로</button>
+        </div>
+        <div id="categoryPosts"></div>
+    </div>
+
+    <script>
+    let posts = [];
+
+    function openWritePage() {
+        document.getElementById('home').classList.add('hidden');
+        document.getElementById('write').classList.remove('hidden');
+        document.getElementById('categoryView').classList.add('hidden');
+    }
+
+    function goHome() {
+        document.getElementById('home').classList.remove('hidden');
+        document.getElementById('write').classList.add('hidden');
+        document.getElementById('categoryView').classList.add('hidden');
+    }
+
+    function submitPost() {
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+        const category = document.getElementById('category').value;
+        const date = new Date().toLocaleString();
+        const fileInput = document.getElementById('file');
+        const file = fileInput.files[0];
+        const fileURL = file ? URL.createObjectURL(file) : null;
+        const fileName = file ? file.name : null;
+        const id = Date.now();
+
+        const post = { id, title, content, category, date, fileName, fileURL };
+        posts.push(post);
+
+        goHome();
+        document.getElementById('title').value = '';
+        document.getElementById('content').value = '';
+        document.getElementById('file').value = '';
+    }
+
+    function deletePost(id) {
+        posts = posts.filter(p => p.id !== id);
+        const currentCategory = document.getElementById('categoryTitle').innerText;
+        openCategoryPage(currentCategory);
+    }
+
+    function openCategoryPage(category) {
+        document.getElementById('home').classList.add('hidden');
+        document.getElementById('write').classList.add('hidden');
+        document.getElementById('categoryView').classList.remove('hidden');
+
+        document.getElementById('categoryTitle').innerText = category;
+        const container = document.getElementById('categoryPosts');
+        container.innerHTML = '';
+
+        posts.filter(p => p.category === category).forEach(post => {
+        const div = document.createElement('div');
+        div.className = 'detail-post';
+        div.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.content}</p>
+            <div class="post-meta">작성일: ${post.date}</div>
+            ${post.fileName ? `<div class="post-meta">첨부파일: <a href="${post.fileURL}" download="${post.fileName}">${post.fileName}</a></div>` : ''}
+            <button class="button" onclick="deletePost(${post.id})">삭제</button>
+        `;
+        container.appendChild(div);
+        });
+    }
+    </script>
+</body>
+</html>
